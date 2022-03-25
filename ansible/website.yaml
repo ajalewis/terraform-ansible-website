@@ -1,0 +1,31 @@
+---
+- name: Install simple html website
+  hosts: all
+  become: yes
+  become_user: root
+  become_method: sudo
+  tasks:
+    
+    - name: Update & upgrade apt packages
+      apt:
+        upgrade: yes
+        update_cache: yes
+    
+    - name: apache2 package is present
+      apt:
+        name: apache2
+        state: present
+
+    - name: Configure a custom index.html
+      template:
+        src: files/index.j2
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: 0644
+
+    - name: httpd is started
+      service:
+        name: apache2
+        state: started
+        enabled: true
