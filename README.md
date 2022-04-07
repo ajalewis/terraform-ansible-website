@@ -9,7 +9,7 @@
 
 ### Ansible [inventory]
 
-1. Specifcy <public_ip_address> 
+1. Specify <public_ip_address> 
 2. Specify ansible_ssh_private_key_file="<path/to/privatekey>"
 
 ## How to Run
@@ -24,6 +24,6 @@
 
 1. `$ ansible-playbook -i invenotry website.yaml`
 
-If done correctly, the apache server will respond with the public IP and hostname.
+### To test
 
 `$ curl <ip_address>`
