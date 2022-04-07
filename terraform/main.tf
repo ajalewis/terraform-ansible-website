@@ -8,8 +8,8 @@ terraform {
 
 provider "aws" {
   region     = "ap-southeast-2"
-  shared_credentials_files = ["/home/alewis/.aws/credentials"]
-  profile                  = "alewis"
+  shared_credentials_files = ["</your/aws/creds/>"]
+  profile                  = "<profile_name>"
 }
 
 ## Create VPC
