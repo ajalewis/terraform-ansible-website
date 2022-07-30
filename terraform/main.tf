@@ -45,7 +45,7 @@ resource "aws_key_pair" "generated_key" {
 ## Create EC2 instance
 resource "aws_instance" "web_vm" {
   # Based on Ubuntu Server 20.04 LTS
-  ami                         = data.aws_ami.amz-ec2.id
+  ami                         = data.aws_ami.ubuntu-ec2.id
   key_name                    = "web_key"
   instance_type               = "t2.micro"
   subnet_id                   = module.vpc.public_subnets[0]
