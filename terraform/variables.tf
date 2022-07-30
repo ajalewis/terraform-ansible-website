@@ -18,6 +18,11 @@ data "aws_ami" "amz-ec2" {
     name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04*"]
   }
+
+  filter {
+    name = "Architecture"
+    values = ["x86_64"]
+  }
 }
 
 locals {
