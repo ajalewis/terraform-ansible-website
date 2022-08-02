@@ -16,11 +16,11 @@ data "aws_ami" "ubuntu-ec2" {
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-*-server-*"]
   }
-
+  
   filter {
-    name = "Architecture"
+    name   = "architecture"
     values = ["x86_64"]
   }
 }

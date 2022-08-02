@@ -1,17 +1,3 @@
-terraform {
-  required_providers {
-    aws = {
-      source = "hashicorp/aws"
-    }
-  }
-}
-
-provider "aws" {
-  region     = "ap-southeast-2"
-  access_key = "<key>"
-  secret_key = "<key>"
-}
-
 ## Create VPC
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
