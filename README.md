@@ -4,26 +4,18 @@
 
 ### Terraform [main.tf]
 
-1. shared_credentials_files = ["/your/aws/creds/here"] Optional to include relevant profile
-2. Adjust Region/AVZ if necessary 
+1. Ensure AWS credentials are vaild
 
 ### Ansible [inventory]
 
-1. Specify <public_ip_address>
-2. Specify ansible_ssh_private_key_file="<path/to/privatekey>"
+1. Ensure Ansible is present on local machine
 
 ## How to Run
 
-### Terraform
-
 1. `$ terraform init`
-2. `$ terraform plan`
+2. `$ terraform plan` (optional)
 3. `$ terraform apply`
-
-### Ansible
-
-1. `$ ansible-playbook -i inventory website.yaml`
 
 ### To test
 
-`$ curl <ip_address>`
+`$ curl <public_ip_address>`
