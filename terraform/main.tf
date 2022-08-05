@@ -79,16 +79,23 @@ resource "aws_security_group" "website_sg" {
 
 }
 
+resource "time_sleep" "wait_20_seconds" {
+    depends_on = [
+    aws_eip.elastic_ip
+  ]
+
+  create_duration = "20s"
+}
+
 resource "null_resource" "ansible" {
   depends_on = [
-    aws_instance.web_vm
+    time_sleep.wait_20_seconds
   ]
 
   provisioner "local-exec" {
-    inline = [
-      "find ../ansible/inventory -type f -exec sed -i '' 's/public_ip_address/${aws_eip.elastic_ip.public_ip}/g' {} ';'",
-      "ansible-playbook -i ../ansible/inventory ../ansible/website.yaml"
-
-    ]
+    command = <<-EOT
+      find ../ansible/inventory -type f -exec sed -i 's/public_ip_address/${aws_eip.elastic_ip.public_ip}/g' {} ';'
+      ansible-playbook -i ../ansible/inventory ../ansible/website.yaml
+    EOT
   }
 }
