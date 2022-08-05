@@ -79,23 +79,15 @@ resource "aws_security_group" "website_sg" {
 
 }
 
-resource "null_resource" "apache" {
+resource "null_resource" "ansible" {
   depends_on = [
     aws_instance.web_vm
   ]
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = tls_private_key.web_key.private_key_pem
-    host        = aws_instance.web_vm.public_ip
-    #host = data.terraform_remote_state.remote.outputs.vm_public_ip
-  }
 
-  provisioner "remote-exec" {
+  provisioner "local-exec" {
     inline = [
-      "sudo apt install apache2 -y",
-      "sudo echo 'Hello' > /var/www/html/index.html",
-      "sudo systemctl enable --now apache2",
+      "find ../ansible/inventory -type f -exec sed -i '' 's/public_ip_address/${aws_eip.elastic_ip.public_ip}/g' {} ';'",
+      "ansible-playbook -i ../ansible/inventory ../ansible/website.yaml"
 
     ]
   }
