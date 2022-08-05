@@ -2,8 +2,8 @@
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "website-vpc"
-  cidr = "10.0.0.0/16"
+  name           = "website-vpc"
+  cidr           = "10.0.0.0/16"
   azs            = ["ap-southeast-2a"]
   public_subnets = ["10.0.101.0/24"]
 
@@ -19,7 +19,7 @@ resource "aws_key_pair" "generated_key" {
   key_name   = var.generated_key_name
   public_key = tls_private_key.web_key.public_key_openssh
 
-  provisioner "local-exec" {    # Generate "web_key.pem" in current directory
+  provisioner "local-exec" { # Generate "web_key.pem" in current directory
     command = <<-EOT
       echo '${tls_private_key.web_key.private_key_pem}' > ./'${var.generated_key_name}'.pem
       chmod 400 ./'${var.generated_key_name}'.pem
@@ -36,10 +36,27 @@ resource "aws_instance" "web_vm" {
   instance_type               = "t2.micro"
   subnet_id                   = module.vpc.public_subnets[0]
   vpc_security_group_ids      = [aws_security_group.website_sg.id]
-  associate_public_ip_address = false
+  associate_public_ip_address = true
 
   tags = {
     Name = "web_vm"
+  }
+
+  connection {
+    type = "ssh"
+    user = "ubuntu"
+    private_key = tls_private_key.web_key.private_key_pem
+    host = aws_instance.web_vm.public_ip
+    #host = data.terraform_remote_state.remote.outputs.vm_public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt install apache2 -y",
+      "sudo echo 'Hello' > /var/www/html/index.html",
+      "sudo systemctl enable --now apache2",
+
+    ]
   }
 }
 
