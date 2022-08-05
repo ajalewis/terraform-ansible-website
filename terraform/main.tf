@@ -80,12 +80,14 @@ resource "aws_security_group" "website_sg" {
 }
 
 resource "null_resource" "apache" {
-  
-    connection {
-    type = "ssh"
-    user = "ubuntu"
+  depends_on = [
+    aws_instance.web_vm
+  ]
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
     private_key = tls_private_key.web_key.private_key_pem
-    host = aws_instance.web_vm.public_ip
+    host        = aws_instance.web_vm.public_ip
     #host = data.terraform_remote_state.remote.outputs.vm_public_ip
   }
 
