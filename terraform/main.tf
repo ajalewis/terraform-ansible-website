@@ -42,22 +42,6 @@ resource "aws_instance" "web_vm" {
     Name = "web_vm"
   }
 
-  connection {
-    type = "ssh"
-    user = "ubuntu"
-    private_key = tls_private_key.web_key.private_key_pem
-    host = aws_instance.web_vm.public_ip
-    #host = data.terraform_remote_state.remote.outputs.vm_public_ip
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt install apache2 -y",
-      "sudo echo 'Hello' > /var/www/html/index.html",
-      "sudo systemctl enable --now apache2",
-
-    ]
-  }
 }
 
 resource "aws_eip" "elastic_ip" {
@@ -93,4 +77,24 @@ resource "aws_security_group" "website_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+}
+
+resource "null_resource" "apache" {
+  
+    connection {
+    type = "ssh"
+    user = "ubuntu"
+    private_key = tls_private_key.web_key.private_key_pem
+    host = aws_instance.web_vm.public_ip
+    #host = data.terraform_remote_state.remote.outputs.vm_public_ip
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt install apache2 -y",
+      "sudo echo 'Hello' > /var/www/html/index.html",
+      "sudo systemctl enable --now apache2",
+
+    ]
+  }
 }
