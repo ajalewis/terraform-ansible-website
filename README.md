@@ -2,13 +2,13 @@
 
 ## How to Setup
 
-### Terraform [main.tf]
+### Terraform
 
-1. Ensure AWS credentials are vaild
+1. Ensure AWS credentials are vaild (https://registry.terraform.io/providers/hashicorp/aws/latest/docs#shared-configuration-and-credentials-files)
 
-### Ansible [inventory]
+### Ansible
 
-1. Ensure Ansible is present on local machine
+1. Ensure Ansible is present on local machine (https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
 
 ## How to Run
 
