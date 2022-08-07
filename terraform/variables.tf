@@ -28,12 +28,3 @@ data "aws_ami" "ubuntu-ec2" {
 locals {
   my_ip = jsondecode(data.http.my_public_ip.body)
 }
-
-data "terraform_remote_state" "remote" {
-  backend = "s3"
-  config = {
-    bucket = "tfstate.alexanderashworth.io"
-    key    = "main/terraform.tfstate"
-    region = "ap-southeast-2"
-  }
-}
